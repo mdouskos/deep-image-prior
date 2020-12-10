@@ -2,6 +2,7 @@ from .skip import skip
 from .texture_nets import get_texture_nets
 from .resnet import ResNet
 from .unet import UNet
+from .decoder import decoder
 
 import torch.nn as nn
 

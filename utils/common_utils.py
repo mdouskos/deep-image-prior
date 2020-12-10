@@ -59,7 +59,7 @@ def get_image_grid(images_np, nrow=8):
     
     return torch_grid.numpy()
 
-def plot_image_grid(images_np, nrow =8, factor=1, interpolation='lanczos'):
+def plot_image_grid(images_np, nrow =8, factor=1, interpolation='lanczos', im=None):
     """Draws images in a grid
     
     Args:
@@ -75,16 +75,24 @@ def plot_image_grid(images_np, nrow =8, factor=1, interpolation='lanczos'):
 
     grid = get_image_grid(images_np, nrow)
     
-    plt.figure(figsize=(len(images_np) + factor, 12 + factor))
-    
-    if images_np[0].shape[0] == 1:
-        plt.imshow(grid[0], cmap='gray', interpolation=interpolation)
+    if im is None:
+      plt.figure(figsize=(len(images_np) + factor, 12 + factor))
+      
+      if images_np[0].shape[0] == 1:
+          im = plt.imshow(grid[0], cmap='gray', interpolation=interpolation)
+      else:
+          im = plt.imshow(grid.transpose(1, 2, 0), interpolation=interpolation)
     else:
-        plt.imshow(grid.transpose(1, 2, 0), interpolation=interpolation)
+      draw_data = None
+      if images_np[0].shape[0] == 1:
+          draw_data = grid[0]
+      else:
+          draw_data = grid.transpose(1, 2, 0)
+      im.set_data(draw_data)
     
     plt.show()
     
-    return grid
+    return grid, im
 
 def load(path):
     """Load PIL image."""
