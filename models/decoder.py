@@ -38,11 +38,11 @@ def decoder(
     for i in range(len(num_channels_up)):
         block = nn.Sequential()
         
-        if i == len(num_channels_up) - 1:
+        if i == 0:
             # The deepest
             k = num_input_channels
         else:
-            k = num_channels_up[i + 1]
+            k = num_channels_up[i - 1]
 
         block.add(conv(k, num_channels_up[i], filter_size_up[i], 1, bias=need_bias, pad=pad))
         block.add(bn(num_channels_up[i]))
@@ -59,7 +59,7 @@ def decoder(
 
         model.add(nn.Upsample(scale_factor=2, mode=upsample_mode[i]))
 
-    model.add(conv(num_channels_up[0], num_output_channels, 1, bias=need_bias, pad=pad))
+    model.add(conv(num_channels_up[-1], num_output_channels, 1, bias=need_bias, pad=pad))
     if need_sigmoid:
         model.add(nn.Sigmoid())
 

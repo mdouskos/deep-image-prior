@@ -27,6 +27,10 @@ def get_net(input_depth, NET_TYPE, pad, upsample_mode, n_channels=3, act_fun='Le
     elif NET_TYPE == 'identity':
         assert input_depth == 3
         net = nn.Sequential()
+    elif NET_TYPE == 'decoder':
+        net = decoder(input_depth, n_channels, num_channels_up = [skip_n33u]*num_scales if isinstance(skip_n33u, int) else skip_n33u,
+                                                upsample_mode=upsample_mode, 
+                                                need_sigmoid=True, need_bias=True, pad=pad, act_fun=act_fun)
     else:
         assert False
 
